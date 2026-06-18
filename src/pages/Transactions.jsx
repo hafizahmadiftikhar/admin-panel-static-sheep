@@ -5,11 +5,11 @@ import Select from '../components/ui/Select';
 import Button from '../components/ui/Button';
 import StatusBadge from '../components/StatusBadge';
 import TierBadge from '../components/TierBadge';
+import WalletAddress from '../components/WalletAddress';
 import {
   TRANSACTIONS,
   PAYMENT_METHODS,
   TX_STATUSES,
-  shortAddress,
   fmtDateTime,
 } from '../data/mockData';
 import { useSearch } from '../context/SearchContext';
@@ -103,11 +103,7 @@ export default function Transactions() {
     {
       key: 'buyer',
       header: 'Buyer',
-      render: (t) => (
-        <span className="font-mono text-xs text-white/60">
-          {shortAddress(t.buyer)}
-        </span>
-      ),
+      render: (t) => <WalletAddress address={t.buyer} />,
     },
     {
       key: 'amountSol',

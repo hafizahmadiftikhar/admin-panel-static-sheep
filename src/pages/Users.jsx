@@ -1,17 +1,13 @@
 import { useMemo, useState } from 'react';
-import { Copy, Wallet, Coins, Calendar } from 'lucide-react';
+import { Wallet, Coins, Calendar } from 'lucide-react';
 import DataTable from '../components/ui/DataTable';
 import Modal from '../components/ui/Modal';
 import StatusBadge from '../components/StatusBadge';
 import TierBadge from '../components/TierBadge';
 import Badge from '../components/ui/Badge';
 import Select from '../components/ui/Select';
-import {
-  HOLDERS,
-  TRANSACTIONS,
-  shortAddress,
-  fmtDate,
-} from '../data/mockData';
+import WalletAddress from '../components/WalletAddress';
+import { HOLDERS, TRANSACTIONS, fmtDate } from '../data/mockData';
 import { useSearch } from '../context/SearchContext';
 
 const STATUS_OPTIONS = [
@@ -49,9 +45,10 @@ export default function Users() {
           <span className="flex h-8 w-8 items-center justify-center rounded-lg border border-gold/30 bg-gold/10 text-xs font-medium text-gold-light">
             {r.id.slice(-2)}
           </span>
-          <span className="font-mono text-xs text-gold-light/90">
-            {shortAddress(r.wallet)}
-          </span>
+          <WalletAddress
+            address={r.wallet}
+            textClassName="text-xs text-gold-light/90"
+          />
         </div>
       ),
     },
@@ -116,16 +113,11 @@ export default function Users() {
             <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl border border-white/8 bg-ink px-4 py-3">
               <div className="flex items-center gap-2">
                 <Wallet size={16} className="text-gold" />
-                <span className="font-mono text-sm text-gold-light">
-                  {shortAddress(selected.wallet)}
-                </span>
-                <button
-                  onClick={() => navigator.clipboard?.writeText(selected.wallet)}
-                  className="text-white/40 transition-colors hover:text-gold-light"
-                  title="Copy address"
-                >
-                  <Copy size={14} />
-                </button>
+                <WalletAddress
+                  address={selected.wallet}
+                  textClassName="text-sm text-gold-light"
+                  iconSize={14}
+                />
               </div>
               <StatusBadge status={selected.status} />
             </div>

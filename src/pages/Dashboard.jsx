@@ -17,13 +17,13 @@ import StatCard from '../components/ui/StatCard';
 import Card from '../components/ui/Card';
 import TierBadge from '../components/TierBadge';
 import StatusBadge from '../components/StatusBadge';
+import WalletAddress from '../components/WalletAddress';
 import Button from '../components/ui/Button';
 import {
   DASHBOARD_STATS,
   SALES_LAST_7_DAYS,
   PAYMENT_BREAKDOWN,
   TRANSACTIONS,
-  shortAddress,
   fmtDate,
 } from '../data/mockData';
 import { chartColors } from '../theme';
@@ -232,8 +232,8 @@ export default function Dashboard() {
                       <TierBadge tier={tx.tier} />
                     </div>
                   </td>
-                  <td className="font-mono text-xs text-white/60">
-                    {shortAddress(tx.buyer)}
+                  <td>
+                    <WalletAddress address={tx.buyer} />
                   </td>
                   <td className="text-right font-medium text-gold">
                     {tx.amountSol} SOL
