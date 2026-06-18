@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Search, ChevronDown, Menu, User, LogOut } from 'lucide-react';
-import { titleForPath } from '../../config/nav';
+import { titleForPath, subtitleForPath } from '../../config/nav';
 import { useAuth } from '../../context/AuthContext';
 import { useSearch } from '../../context/SearchContext';
 
@@ -16,6 +16,7 @@ export default function Topbar({ onOpenMobileNav }) {
   const { profile, logout } = useAuth();
   const { query, setQuery } = useSearch();
   const title = titleForPath(location.pathname);
+  const subtitle = subtitleForPath(location.pathname);
 
   const [menuOpen, setMenuOpen] = useState(false);
   const menuRef = useRef(null);
@@ -46,10 +47,23 @@ export default function Topbar({ onOpenMobileNav }) {
           <Menu size={18} />
         </button>
 
-        {/* Dynamic page title (left) */}
-        <h1 className="flex-shrink-0 font-serif text-xl text-gold-light sm:text-2xl">
-          {title}
-        </h1>
+        {/* Dynamic page title + subtitle (left) */}
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.22, ease: 'easeOut' }}
+          className="min-w-0 flex-shrink-0"
+        >
+          <h1 className="font-serif text-lg leading-tight text-gold-light sm:text-xl">
+            {title}
+          </h1>
+          {subtitle && (
+            <p className="hidden max-w-[220px] truncate text-xs leading-tight text-white/45 md:block lg:max-w-sm">
+              {subtitle}
+            </p>
+          )}
+        </motion.div>
 
         {/* Global search (center) */}
         <div className="hidden flex-1 justify-center px-2 md:flex">
