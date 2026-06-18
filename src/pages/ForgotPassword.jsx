@@ -34,7 +34,7 @@ export default function ForgotPassword() {
       <h2 className="font-serif text-xl text-gold-light">Verify your code</h2>
       <p className="mt-1 text-sm text-white/45">
         We sent a 6-digit code to{' '}
-        <span className="text-gold-light">admin@dunstandowns.nz</span>. Enter it
+        <span className="text-gold-light">hafiz@fiznex.com</span>. Enter it
         below to continue.
       </p>
 

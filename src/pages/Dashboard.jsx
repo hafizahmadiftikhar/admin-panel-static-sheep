@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ResponsiveContainer,
@@ -21,12 +21,22 @@ import WalletAddress from '../components/WalletAddress';
 import Button from '../components/ui/Button';
 import {
   DASHBOARD_STATS,
-  SALES_LAST_7_DAYS,
+  SALES_DAILY,
   PAYMENT_BREAKDOWN,
   TRANSACTIONS,
   fmtDate,
 } from '../data/mockData';
 import { chartColors } from '../theme';
+
+const RANGES = [
+  { value: 7, label: '7 days' },
+  { value: 14, label: '14 days' },
+  { value: 30, label: '30 days' },
+];
+const METRICS = [
+  { value: 'mints', label: 'Mints', key: 'sales', unit: ' mints' },
+  { value: 'revenue', label: 'Revenue', key: 'sol', unit: ' SOL' },
+];
 
 function ChartTooltip({ active, payload, label, unit = '' }) {
   if (!active || !payload?.length) return null;
@@ -47,6 +57,14 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const recent = useMemo(() => TRANSACTIONS.slice(0, 6), []);
   const totalPayments = PAYMENT_BREAKDOWN.reduce((a, b) => a + b.value, 0);
+
+  // Sales chart filters
+  const [range, setRange] = useState(7);
+  const [metric, setMetric] = useState('mints');
+  const activeMetric = METRICS.find((m) => m.value === metric);
+  const salesData = useMemo(() => SALES_DAILY.slice(-range), [range]);
+  // thin out X labels so longer ranges don't crowd
+  const tickInterval = range <= 7 ? 0 : range <= 14 ? 1 : 4;
 
   return (
     <div className="space-y-6">
@@ -90,17 +108,55 @@ export default function Dashboard() {
 
       {/* Charts */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {/* Line / area chart — sales last 7 days */}
+        {/* Line / area chart — sales, filterable by range + metric */}
         <Card
-          title="Sales — Last 7 Days"
-          subtitle="NFTs minted per day"
+          title={`Sales — Last ${range} Days`}
+          subtitle={
+            metric === 'mints' ? 'NFTs minted per day' : 'Revenue (SOL) per day'
+          }
           className="lg:col-span-2"
-          bodyClassName="p-5 pt-2"
+          bodyClassName="p-5 pt-3"
         >
-          <div className="h-72 w-full">
+          {/* Filters */}
+          <div className="mb-4 flex flex-wrap items-center gap-2">
+            {/* Metric */}
+            <div className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-ink p-1">
+              {METRICS.map((m) => (
+                <button
+                  key={m.value}
+                  onClick={() => setMetric(m.value)}
+                  className={`h-8 rounded-md px-3 text-xs transition-all duration-200 ${
+                    metric === m.value
+                      ? 'bg-gold/15 text-gold-light'
+                      : 'text-white/50 hover:text-gold-light'
+                  }`}
+                >
+                  {m.label}
+                </button>
+              ))}
+            </div>
+            {/* Range */}
+            <div className="inline-flex items-center gap-1 rounded-lg border border-white/10 bg-ink p-1">
+              {RANGES.map((r) => (
+                <button
+                  key={r.value}
+                  onClick={() => setRange(r.value)}
+                  className={`h-8 rounded-md px-3 text-xs transition-all duration-200 ${
+                    range === r.value
+                      ? 'bg-gold/15 text-gold-light'
+                      : 'text-white/50 hover:text-gold-light'
+                  }`}
+                >
+                  {r.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
-                data={SALES_LAST_7_DAYS}
+                data={salesData}
                 margin={{ top: 16, right: 8, left: -16, bottom: 0 }}
               >
                 <defs>
@@ -111,9 +167,10 @@ export default function Dashboard() {
                 </defs>
                 <CartesianGrid stroke={chartColors.grid} vertical={false} />
                 <XAxis
-                  dataKey="day"
+                  dataKey="label"
+                  interval={tickInterval}
                   stroke={chartColors.axis}
-                  tick={{ fontSize: 12, fill: chartColors.axis }}
+                  tick={{ fontSize: 11, fill: chartColors.axis }}
                   tickLine={false}
                   axisLine={false}
                 />
@@ -125,17 +182,17 @@ export default function Dashboard() {
                   width={40}
                 />
                 <Tooltip
-                  content={<ChartTooltip unit=" mints" />}
+                  content={<ChartTooltip unit={activeMetric.unit} />}
                   cursor={{ stroke: chartColors.line, strokeOpacity: 0.3 }}
                 />
                 <Area
                   type="monotone"
-                  dataKey="sales"
-                  name="mints"
+                  dataKey={activeMetric.key}
+                  name={activeMetric.label}
                   stroke={chartColors.line}
                   strokeWidth={2.5}
                   fill="url(#goldFill)"
-                  dot={{ r: 3, fill: chartColors.line, strokeWidth: 0 }}
+                  dot={range <= 14 ? { r: 3, fill: chartColors.line, strokeWidth: 0 } : false}
                   activeDot={{ r: 5, fill: chartColors.lineSoft }}
                 />
               </AreaChart>

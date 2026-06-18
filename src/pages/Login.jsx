@@ -13,7 +13,7 @@ import Button from '../components/ui/Button';
 export default function Login() {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const [email, setEmail] = useState('admin@dunstandowns.nz');
+  const [email, setEmail] = useState('hafiz@fiznex.com');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -39,7 +39,7 @@ export default function Login() {
           icon={Mail}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="you@dunstandowns.nz"
+          placeholder="you@fiznex.com"
           autoComplete="email"
         />
         <Input

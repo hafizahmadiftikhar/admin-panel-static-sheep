@@ -9,7 +9,7 @@ import { ADMIN_PROFILE } from '../data/mockData';
 const AuthContext = createContext(null);
 
 const SESSION_KEY = 'ddc.admin.session';
-const PROFILE_KEY = 'ddc.admin.profile';
+const PROFILE_KEY = 'ddc.admin.profile.v2';
 
 function load(key, fallback) {
   try {

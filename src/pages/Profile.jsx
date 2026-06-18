@@ -6,6 +6,7 @@ import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
 import { useAuth } from '../context/AuthContext';
+import { FALLBACK_AVATAR } from '../data/mockData';
 
 export default function Profile() {
   const { profile, updateProfile } = useAuth();
@@ -52,6 +53,9 @@ export default function Profile() {
               <img
                 src={avatar}
                 alt={name}
+                onError={(e) => {
+                  e.currentTarget.src = FALLBACK_AVATAR;
+                }}
                 className="h-28 w-28 rounded-2xl border border-gold/30 object-cover shadow-[0_8px_28px_rgba(0,0,0,0.45)]"
               />
               <button

@@ -253,15 +253,28 @@ export const DASHBOARD_STATS = {
   transactionsToday: 12,
 };
 
-export const SALES_LAST_7_DAYS = [
-  { day: 'Thu', label: 'Jun 12', sales: 18, sol: 312 },
-  { day: 'Fri', label: 'Jun 13', sales: 24, sol: 418 },
-  { day: 'Sat', label: 'Jun 14', sales: 31, sol: 602 },
-  { day: 'Sun', label: 'Jun 15', sales: 27, sol: 489 },
-  { day: 'Mon', label: 'Jun 16', sales: 21, sol: 366 },
-  { day: 'Tue', label: 'Jun 17', sales: 29, sol: 544 },
-  { day: 'Wed', label: 'Jun 18', sales: 12, sol: 233 },
-];
+/* 30 days of daily sales, ending 18 Jun 2026 (deterministic). The dashboard
+ * chart slices the last 7 / 14 / 30 of these based on the selected range. */
+function buildDailySales() {
+  const end = Date.parse('2026-06-18T00:00:00Z');
+  const out = [];
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date(end - i * 86400000);
+    const seed = 30 - i;
+    const sales = 8 + Math.round(seeded(seed * 2.3) * 26); // 8..34 mints
+    const sol = Math.round(sales * (14 + seeded(seed * 1.7) * 9)); // revenue
+    out.push({
+      day: d.toLocaleDateString('en-NZ', { weekday: 'short' }),
+      label: d.toLocaleDateString('en-NZ', { day: '2-digit', month: 'short' }),
+      sales,
+      sol,
+    });
+  }
+  return out;
+}
+
+export const SALES_DAILY = buildDailySales();
+export const SALES_LAST_7_DAYS = SALES_DAILY.slice(-7);
 
 export const PAYMENT_BREAKDOWN = [
   { name: 'SOL', value: 134 },
@@ -292,11 +305,15 @@ export const COLLECTION_SETTINGS = {
 };
 
 /* Admin profile */
+export const FALLBACK_AVATAR =
+  'https://ui-avatars.com/api/?name=Fiznex&background=161a23&color=f0d08c&bold=true&size=160';
+
 export const ADMIN_PROFILE = {
-  name: 'Hamish Sinclair',
-  email: 'admin@dunstandowns.nz',
-  role: 'Station Manager',
-  avatar: 'https://i.pravatar.cc/160?img=68',
+  name: 'Fiznex',
+  email: 'hafiz@fiznex.com',
+  role: 'Administrator',
+  avatar:
+    'https://media.licdn.com/dms/image/v2/D4D03AQHKOjHWN8JBRg/profile-displayphoto-scale_400_400/B4DZleMx5kIgAg-/0/1758222036232?e=1783555200&v=beta&t=OgSqh9Q5saIU2h_xfZqS61T1c1HZaomdjMcBQ5s1r4A',
 };
 
 /* Notifications for the topbar bell */

@@ -5,6 +5,7 @@ import { Search, ChevronDown, Menu, User, LogOut } from 'lucide-react';
 import { titleForPath, subtitleForPath } from '../../config/nav';
 import { useAuth } from '../../context/AuthContext';
 import { useSearch } from '../../context/SearchContext';
+import { FALLBACK_AVATAR } from '../../data/mockData';
 
 /**
  * Top navbar — dynamic page title (left), global search (centered, same on
@@ -98,6 +99,9 @@ export default function Topbar({ onOpenMobileNav }) {
             <img
               src={profile.avatar}
               alt={profile.name}
+              onError={(e) => {
+                e.currentTarget.src = FALLBACK_AVATAR;
+              }}
               className="h-8 w-8 rounded-md border border-gold/30 object-cover"
             />
             <span className="hidden text-sm text-gold-light sm:block">
