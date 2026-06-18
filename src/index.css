@@ -1,0 +1,254 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: #0e1118;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: #f0d08c;
+}
+
+::selection {
+  background: #c9a840;
+  color: #0e1118;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0e1118;
+}
+::-webkit-scrollbar-thumb {
+  background: #2a2f3d;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c9a840;
+}
+
+@layer components {
+  /* === Decorative === */
+  .bg-grain {
+    background-image: radial-gradient(
+      1200px 600px at 50% -10%,
+      rgba(201, 168, 64, 0.08),
+      transparent 60%
+    );
+  }
+
+  .text-gold-gradient {
+    background: linear-gradient(135deg, #f0d08c 0%, #c9a840 50%, #8a6f1c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .eyebrow {
+    @apply inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.3em] text-gold;
+  }
+  .eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: rgba(201, 168, 64, 0.6);
+  }
+
+  .gold-divider {
+    height: 1px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(201, 168, 64, 0.6),
+      transparent
+    );
+  }
+
+  /* === Buttons (consistent 44px sizing + gold glow on hover) === */
+  .btn-gold {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-gold/50 bg-transparent px-6 text-sm font-medium tracking-wide text-gold-light transition-all duration-300;
+  }
+  .btn-gold:hover {
+    @apply border-gold text-ink;
+    background-color: #c9a840;
+    box-shadow: 0 0 14px rgba(201, 168, 64, 0.25);
+    transform: translateY(-1px);
+  }
+
+  .btn-gold-solid {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-lg px-6 text-sm font-medium tracking-wide text-ink transition-all duration-300;
+    background: linear-gradient(135deg, #f0d08c 0%, #c9a840 60%, #a0832e 100%);
+  }
+  .btn-gold-solid:hover {
+    background: linear-gradient(135deg, #f8e3b4 0%, #f0d08c 60%, #c9a840 100%);
+    box-shadow: 0 0 16px rgba(240, 208, 140, 0.28);
+    transform: translateY(-1px);
+  }
+  .btn-gold-solid:disabled {
+    filter: grayscale(0.4);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .btn-ghost {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-white/10 px-5 text-sm text-gold-light/80 transition-all duration-300;
+  }
+  .btn-ghost:hover {
+    @apply border-gold/60 text-gold-light;
+    box-shadow: 0 0 12px rgba(201, 168, 64, 0.16);
+  }
+
+  .btn-gold-sm {
+    @apply inline-flex h-9 items-center justify-center gap-1.5 rounded-lg border border-gold/45 px-3.5 text-xs font-medium tracking-wide text-gold-light transition-all duration-300;
+  }
+  .btn-gold-sm:hover {
+    @apply border-gold text-ink;
+    background-color: #c9a840;
+    box-shadow: 0 0 12px rgba(201, 168, 64, 0.24);
+  }
+
+  /* Destructive button — same skeleton, red glow */
+  .btn-danger {
+    @apply inline-flex h-11 items-center justify-center gap-2 rounded-lg border border-red-500/40 bg-transparent px-5 text-sm font-medium tracking-wide text-red-300 transition-all duration-300;
+  }
+  .btn-danger:hover {
+    @apply border-red-400 text-ink;
+    background-color: #f87171;
+    box-shadow: 0 0 14px rgba(248, 113, 113, 0.26);
+    transform: translateY(-1px);
+  }
+
+  /* === Card with gold-glow hover === */
+  .card-gold {
+    @apply rounded-xl border border-white/8 bg-ink-2 transition-all duration-300;
+  }
+  .card-gold:hover {
+    border-color: rgba(201, 168, 64, 0.45);
+    box-shadow:
+      0 0 0 1px rgba(201, 168, 64, 0.15),
+      0 0 16px rgba(201, 168, 64, 0.08);
+    transform: translateY(-2px);
+  }
+  /* Static card — no lift, for dense dashboard panels */
+  .card-static {
+    @apply rounded-xl border border-white/8 bg-ink-2;
+  }
+
+  /* === Inputs (44px) === */
+  .field {
+    @apply h-11 w-full rounded-lg border border-white/10 bg-ink px-4 text-sm text-gold-light placeholder:text-white/30 transition-all duration-300 focus:outline-none;
+  }
+  input.field,
+  select.field,
+  textarea.field {
+    display: block;
+  }
+  textarea.field {
+    @apply h-auto py-3;
+  }
+  select.field {
+    @apply appearance-none pr-10;
+  }
+  .field:focus {
+    border-color: rgba(201, 168, 64, 0.7);
+    box-shadow: 0 0 0 3px rgba(201, 168, 64, 0.12);
+  }
+  .field-label {
+    @apply mb-1.5 block text-xs uppercase tracking-[0.2em] text-white/50;
+  }
+
+  /* === Custom dropdown menu === */
+  .ddc-menu {
+    background-color: #1a1d26;
+    border: 1px solid #2a2d36;
+    border-radius: 10px;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+    max-height: 240px;
+    overflow-y: auto;
+  }
+  .ddc-menu-option {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 14px;
+    font-size: 13px;
+    color: #d6c89b;
+    cursor: pointer;
+    transition: color 150ms, background-color 150ms;
+  }
+  .ddc-menu-option:hover,
+  .ddc-menu-option[data-active='true'] {
+    background-color: rgba(201, 168, 64, 0.08);
+    color: #f0d08c;
+  }
+
+  /* === Sidebar tooltip (collapsed mode) === */
+  .nav-tooltip {
+    @apply pointer-events-none absolute left-full top-1/2 z-50 ml-3 -translate-y-1/2 whitespace-nowrap rounded-md border border-white/10 bg-ink-2 px-2.5 py-1.5 text-xs text-gold-light opacity-0 shadow-[0_4px_16px_rgba(0,0,0,0.5)] transition-opacity duration-200;
+  }
+  .group:hover .nav-tooltip {
+    @apply opacity-100;
+  }
+
+  /* === Data table === */
+  .admin-table {
+    @apply w-full border-collapse text-left text-sm;
+  }
+  .admin-table thead th {
+    @apply sticky top-0 z-10 whitespace-nowrap border-b border-white/8 bg-ink-2 px-4 py-3 text-[11px] font-medium uppercase tracking-[0.15em] text-white/45;
+  }
+  .admin-table tbody td {
+    @apply border-b border-white/5 px-4 py-3.5 text-gold-light/90 align-middle;
+  }
+  .admin-table tbody tr {
+    @apply transition-colors duration-200;
+  }
+  .admin-table tbody tr:hover {
+    background-color: rgba(201, 168, 64, 0.05);
+  }
+}
+
+/* Subtle pulse for live dots */
+@keyframes pulse-dot {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+.pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
