@@ -56,7 +56,7 @@ export default function Profile() {
                 onError={(e) => {
                   e.currentTarget.src = FALLBACK_AVATAR;
                 }}
-                className="h-28 w-28 rounded-2xl border border-gold/30 object-cover shadow-[0_8px_28px_rgba(0,0,0,0.45)]"
+                className="h-28 w-28 rounded-full border border-gold/30 object-cover shadow-[0_8px_28px_rgba(0,0,0,0.45)]"
               />
               <button
                 onClick={() => fileRef.current?.click()}

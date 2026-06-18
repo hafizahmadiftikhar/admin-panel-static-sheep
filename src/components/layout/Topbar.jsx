@@ -102,7 +102,7 @@ export default function Topbar({ onOpenMobileNav }) {
               onError={(e) => {
                 e.currentTarget.src = FALLBACK_AVATAR;
               }}
-              className="h-8 w-8 rounded-md border border-gold/30 object-cover"
+              className="h-8 w-8 rounded-full border border-gold/30 object-cover"
             />
             <span className="hidden text-sm text-gold-light sm:block">
               {profile.name.split(' ')[0]}
